@@ -28,15 +28,16 @@ cp .env.example .env  # Then add your API keys
 ## 🚀 Usage
 
 ```bash
-poetry run khora_adapter --provider openai --model gpt-4 --text "What's the capital of France?"
+python khora_adapter.cli --provider openai --model gpt-4.1-nano --text "What's the capital of France?"
 ```
 
 If `--text` is omitted, it will prompt you interactively.
 
 ### Example: Multi-role Chat Prompt
 
+TODO: implement multi-role chat prompt
 ```bash
-poetry run khora_adapter --provider openai --model gpt-4
+python khora_adapter.cli --provider openai --model gpt-4.1-nano
 ```
 
 Then enter a structured prompt when prompted:
@@ -56,28 +57,33 @@ Multi-turn prompts and roles are parsed internally or passed as structured messa
 
 ```python
 from khora_adapter.prompt import run
-from khora_adapter.llms.registry import get_factory
-from khora_adapter.messages import PromptMessage
+from khora_adapter.cli import parse_args, get_prompt
+from khora_adapter.llm.registry import get_factory
+import argparse
+from dotenv import load_dotenv
+''' TODO centralize api imports and implement multiturn messages and metadata'''
 
-factory = get_factory(args)
-model = factory.build()
+def get_prompt(args: argparse.Namespace) -> str:
+    return args.text or input(">>> ")
 
-response = run(
-    messages=[
-        PromptMessage(role="system", content="You are a helpful assistant."),
-        PromptMessage(role="user", content="Explain photosynthesis."),
-    ],
-    model=model,
-)
 
-print(response.text)
-print(response.usage)  # Optional metadata like token count
+def main() -> None:
+    load_dotenv()
+    args = parse_args()
+    prompt = get_prompt(args)
+    model = get_factory(args).build()
+    print(run(prompt, model))
+
+
+if __name__ == "__main__":
+    main()  #
 ```
 
 ---
 
 ## 💬 Structured Prompt Format
 
+TODO implement this.
 Prompts are internally converted to a list of messages like:
 
 ```python
@@ -93,6 +99,7 @@ These are supported natively by OpenAI, Gemini, and others.
 
 ## 🌊 Streaming Support
 
+TODO. implement this.
 For models and clients that support it:
 
 ```python
@@ -106,6 +113,7 @@ Streaming lets downstream UIs or tools render partial output in real time.
 
 ## 📊 Structured Output
 
+TODO. implement this
 Responses return structured metadata:
 
 ```python
@@ -135,7 +143,7 @@ Khora handles the rest.
 ## 🧪 Testing
 
 ```bash
-poetry run pytest --cov
+.\scripts\check.ps1
 ```
 
 ---
