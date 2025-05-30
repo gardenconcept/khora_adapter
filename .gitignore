@@ -1,0 +1,68 @@
+    # Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Poetry
+poetry.lock
+
+# VS Code settings
+.vscode/
+.code-workspace
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pytest
+.pytest_cache/
+htmlcov/
+.coverage
+coverage.xml
+.cache/
+
+# Ruff or other linters
+*.lintcache
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+*.manifest
+*.spec
+
+# Packaging
+*.tar.gz
+*.whl
+
+# Jupyter
+.ipynb_checkpoints
+
+# Logs and temp files
+*.log
+*.tmp
+*.bak
+*.swp
+
+# dotenv
+.env
+.env.*
+
+# IDEs
+.idea/
+*.iml
+
+# macOS / Windows
+.DS_Store
+Thumbs.db

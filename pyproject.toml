@@ -1,0 +1,82 @@
+[project]
+name = "khora_adapter"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "john k"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "openai (>=1.82.1,<2.0.0)",
+    "python-dotenv (>=1.1.0,<2.0.0)",
+    "google-genai (>=1.17.0,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.11.12"
+black = "^25.1.0"
+mypy = "^1.16.0"
+pytest = "^8.3.5"
+pytest-cov = "^6.1.1"
+pytest-mock = "^3.14.1"
+scoop = "^0.7.2.0"
+make = "^0.1.6.post2"
+
+[tool.poetry]
+name = "khora_adapter"
+packages = [{ include = "khora_adapter", from = "src" }]
+authors = ["John K <sudoku-king-gender@duck.com>"]
+license = "AGPL-3.0-or-later"
+
+[tool.poetry.scripts]
+pytest-html = "pytest --cov=khora_adapter --cov-report=html:artifacts/coverage"
+khora = "khora_adapter.main:main"
+
+[tool.ruff]
+line-length = 59
+target-version = "py313"
+fix = true
+preview = true            # Enables future behavior & features
+
+lint.select = [
+  "E",  # pycodestyle errors
+  "F",  # pyflakes
+  "I",  # isort
+  "B",  # bugbear
+  "UP", # pyupgrade
+  "SIM", # simplify
+  "C90", # mccabe complexity
+]
+
+lint.ignore = [
+  "E501",  # Line too long (Black handles this)
+]
+
+
+[tool.black]
+line-length = 59
+target-version = ["py313"]
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.mypy_cache
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+
+[tool.pytest.ini_options]
+addopts = "-ra -q"
+testpaths = ["tests"]
+pythonpath = ["src"]
+

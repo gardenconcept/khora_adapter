@@ -1,0 +1,13 @@
+[run]
+branch = True
+source = my_project
+
+[report]
+omit =
+    tests/*
+    */__init__.py
+show_missing = True
+
+exclude_lines =
+    if __name__ == .__main__.:
+    raise NotImplementedError
