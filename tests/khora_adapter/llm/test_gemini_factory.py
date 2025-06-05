@@ -12,10 +12,11 @@ from khora_adapter.llm.gemini.factory import (
 from khora_adapter.llm.gemini.model import GeminiModel
 
 
-@mock.patch("khora_adapter.llm.gemini.model.genai.Client")
+@mock.patch("google.genai.Client")
 def test_gemini_model_factory_build(
     mock_client: Any,
 ) -> None:
+
     os.environ["GEMINI_API_KEY"] = "fake-key"
     factory = GeminiModelFactory(
         model="gemini-test", temperature=0.3

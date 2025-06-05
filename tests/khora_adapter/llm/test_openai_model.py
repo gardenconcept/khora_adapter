@@ -35,7 +35,7 @@ def test_openai_model_complete_response(
     with mock.patch(
         "openai.OpenAI", return_value=mock_client
     ):
-        from khora_adapter.llm.config import (
+        from khora_adapter.llm.openai.config import (
             OpenAIConfig,
         )
         from khora_adapter.llm.openai.model import (
@@ -49,7 +49,7 @@ def test_openai_model_complete_response(
         model = OpenAIModel(config)
 
         result = model.complete("Explain khôra.")
-        assert result == expected
+        assert result.text == expected
 
         mock_client.chat.completions.create.assert_called_once_with(
             model="gpt-4.1",

@@ -2,7 +2,7 @@
 import os
 
 from khora_adapter.llm.base import LLM
-from khora_adapter.llm.config import OpenAIConfig
+from khora_adapter.llm.openai.config import OpenAIConfig
 from khora_adapter.llm.openai.model import OpenAIModel
 
 
@@ -10,7 +10,7 @@ class OpenAIModelFactory:
     def __init__(
         self, model: str, temperature: float
     ) -> None:
-        self.model = model
+        self.model = model or "gpt-4.1-nano"
         self.temperature = temperature
 
     def build(self) -> LLM:

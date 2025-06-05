@@ -2,7 +2,7 @@
 import os
 
 from khora_adapter.llm.base import LLM
-from khora_adapter.llm.config import GeminiConfig
+from khora_adapter.llm.gemini.config import GeminiConfig
 from khora_adapter.llm.gemini.model import GeminiModel
 
 
@@ -10,7 +10,9 @@ class GeminiModelFactory:
     def __init__(
         self, model: str, temperature: float
     ) -> None:
-        self.model = model
+        self.model = (
+            model or "gemini-2.5-flash-preview-05-20"
+        )
         self.temperature = temperature
 
     def build(self) -> LLM:

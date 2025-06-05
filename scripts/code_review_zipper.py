@@ -1,19 +1,34 @@
 # scripts/code_review_zipper.py
 
-import os
 import tarfile
 from datetime import datetime
 from pathlib import Path
 
 # --- Configuration ---
-include_paths = ["src/khora_adapter", "tests", "README.md", "mypi.ini", "pyproject.toml", ".coveragerc", "dir_structure.txt"]
-exclude_patterns = ["__pycache__", ".git", ".env", "venv", "scripts"]
+include_paths = [
+    "src/khora_adapter",
+    "tests",
+    "README.md",
+    "mypi.ini",
+    "pyproject.toml",
+    ".coveragerc",
+    "dir_structure.txt",
+]
+exclude_patterns = [
+    "__pycache__",
+    ".git",
+    ".env",
+    "venv",
+    "scripts",
+]
 timestamp = datetime.now().strftime("%Y%m%d_%H%M")
 output_file = f"code_review_package_{timestamp}.tar.gz"
 
 
 def should_exclude(path: Path) -> bool:
-    return any(part in exclude_patterns for part in path.parts)
+    return any(
+        part in exclude_patterns for part in path.parts
+    )
 
 
 def collect_files(base_paths):
@@ -26,7 +41,9 @@ def collect_files(base_paths):
                 yield p
         else:
             for file in p.rglob("*"):
-                if file.is_file() and not should_exclude(file):
+                if file.is_file() and not should_exclude(
+                    file
+                ):
                     yield file
 
 
@@ -40,13 +57,17 @@ def main():
     print(f"📦 Creating code review archive: {dest.name}")
 
     with tarfile.open(dest, "w:gz") as tar:
-        for file in collect_files([project_root / p for p in include_paths]):
+        for file in collect_files(
+            [project_root / p for p in include_paths]
+        ):
             try:
                 arcname = file.relative_to(project_root)
                 print(f"  + {arcname}")
                 tar.add(file, arcname=str(arcname))
             except ValueError:
-                print(f"  ⚠️ Skipped (outside project): {file}")
+                print(
+                    f"  ⚠️ Skipped (outside project): {file}"
+                )
                 continue
 
     print(f"✅ Archive created successfully: {dest}")

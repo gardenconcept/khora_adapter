@@ -1,12 +1,31 @@
-# scripts/check.ps1
-Write-Host "Running Ruff..."
-poetry run ruff check .
+function Time-Command {
+    param (
+        [string]$Name,
+        [scriptblock]$Command
+    )
 
-Write-Host "Checking formatting with Black..."
-poetry run black .
+    Write-Host "`nRunning $Name..."
+    $start = Get-Date
+    & $Command
+    $end = Get-Date
+    $elapsed = ($end - $start).TotalSeconds
+    Write-Host "$Name took $elapsed seconds.`n"
+}
 
-Write-Host "Running Mypy..."
-poetry run mypy src tests --cache-dir=.mypy_cache --ignore-missing-imports
+Time-Command "Ruff" {
+    ruff check .
+}
 
-Write-Host "Running Pytest..."
-poetry run pytest --cov=khora_adapter --cov-report=html:artifacts/coverage
+Time-Command "Black" {
+    black .
+}
+
+Time-Command "Mypy" {
+    mypy src tests --cache-dir=.mypy_cache --ignore-missing-imports
+}
+
+Time-Command "Pytest" {
+#    pytest --cov=khora_adapter
+    pytest --cov=khora_adapter --cov-report=html:artifacts/coverage
+}
+

@@ -24,10 +24,12 @@ def test_gemini_model_complete_response(
         mock_response
     )
     with mock.patch(
-        "khora_adapter.llm.gemini.model.genai.Client",
+        "google.genai.Client",
         return_value=mock_client,
     ):
-        from khora_adapter.llm.config import GeminiConfig
+        from khora_adapter.llm.gemini.config import (
+            GeminiConfig,
+        )
         from khora_adapter.llm.gemini.model import (
             GeminiModel,
         )
@@ -38,7 +40,7 @@ def test_gemini_model_complete_response(
         model = GeminiModel(config)
 
         result = model.complete("Tell me something.")
-        assert result == expected
+        assert result.text == expected
 
         mock_client.models.generate_content.assert_called_once_with(
             model="gemini-2.0",
